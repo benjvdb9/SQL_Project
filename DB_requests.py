@@ -9,6 +9,9 @@ class DB_Manager():
         self.session = self.createSession()
 
     def createSession(self):
+        #Can be used to use the .db file but not to create a new one
+        #or to update the structure of the database
+        
         Base = declarative_base()
         engine = create_engine('sqlite:///train_alchemy.db')
         Base.metadata.create_all(engine)
@@ -41,18 +44,20 @@ dbm = DB_Manager()
 #dbm.addToTable(SQL_DB.Train, id_train = 1, nb_wagon = 2, id_pc = 3)
 #dbm.removeFromTable(SQL_DB.Train, 1)
 
+#dbm.reset()
+
 #Le trajet Ottignies-Schuman
 '''dbm.addToTable(SQL_DB.Trajets, id_trajets= 1, heure_depart= time(6, 45),
                gare_depart= 'Ottignies', id_train= 30)
 
 #Toutes les stations desservies
-dbm.addToTable(SQL_DB.LienTrajetsStation, id_trajets= 30, id_station= 6,
+dbm.addToTable(SQL_DB.LienTrajetsStation, id_trajets= 1, id_station= 6,
                decalage= 0, retard= 5)
-dbm.addToTable(SQL_DB.LienTrajetsStation, id_trajets= 30, id_station= 7,
+dbm.addToTable(SQL_DB.LienTrajetsStation, id_trajets= 1, id_station= 7,
                decalage= 10, retard= 5)
-dbm.addToTable(SQL_DB.LienTrajetsStation, id_trajets= 30, id_station= 8,
+dbm.addToTable(SQL_DB.LienTrajetsStation, id_trajets= 1, id_station= 8,
                decalage= 20, retard= 0)
-dbm.addToTable(SQL_DB.LienTrajetsStation, id_trajets= 30, id_station= 9,
+dbm.addToTable(SQL_DB.LienTrajetsStation, id_trajets= 1, id_station= 9,
                decalage= 30, retard= 0)
 
 #La db des stations
@@ -64,6 +69,3 @@ dbm.addToTable(SQL_DB.Station, nom= 'Bxl-Schuman', id_station= 9)
 #La db des trains
 dbm.addToTable(SQL_DB.Train, id_train= 30, nb_wagon= 10, id_pc= 3)
 dbm.addToTable(SQL_DB.Train, id_train= 31, nb_wagon= 10, id_pc= 3)'''
-
-
-#dbm.reset()

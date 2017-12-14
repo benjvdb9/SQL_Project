@@ -20,7 +20,7 @@ class Trajets(Base):
 class Station(Base):
     __tablename__ = 'Station'
     nom = Column(String(50))
-    id_station = Column(String(50), primary_key=True)
+    id_station = Column(Integer, primary_key=True)
 
     def getID():
         return Station.id_station

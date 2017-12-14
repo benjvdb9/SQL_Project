@@ -1,11 +1,12 @@
 import SQL_DB
 from datetime import time
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, select
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 class DB_Manager():
     def __init__(self):
+        self.engine  = ''
         self.session = self.createSession()
 
     def createSession(self):
@@ -13,10 +14,10 @@ class DB_Manager():
         #or to update the structure of the database
         
         Base = declarative_base()
-        engine = create_engine('sqlite:///train_alchemy.db')
-        Base.metadata.create_all(engine)
-        Base.metadata.bind = engine
-        DBSession = sessionmaker(bind=engine)
+        self.engine = create_engine('sqlite:///train_alchemy.db')
+        Base.metadata.create_all(self.engine)
+        Base.metadata.bind = self.engine
+        DBSession = sessionmaker(bind=self.engine)
         session = DBSession()
 
         return session
@@ -29,6 +30,15 @@ class DB_Manager():
     def removeFromTable(self, table, id):
         self.session.query(table).filter(table.getID() == id).delete()
         self.session.commit()
+
+    def selectTrajets(self):
+        s = select([SQL_DB.Trajets, SQL_DB.LienTrajetsStation, SQL_DB.Station])
+
+        conn = self.engine.connect()
+        result = conn.execute(s)
+
+        for row in result:
+            print(row)
 
     def reset(self):
         input('Reseting DB, continue?')
@@ -45,6 +55,8 @@ dbm = DB_Manager()
 #dbm.removeFromTable(SQL_DB.Train, 1)
 
 #dbm.reset()
+
+dbm.selectTrajets()
 
 #Le trajet Ottignies-Schuman
 '''dbm.addToTable(SQL_DB.Trajets, id_trajets= 1, heure_depart= time(6, 45),

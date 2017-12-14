@@ -17,16 +17,6 @@ class Trajets(Base):
     def getID():
         return 'id_trajets'
 
-class LienTrajetsStation(Base):
-    __tablename__ = 'LienTrajetStation'
-    id_trajets = Column(Integer, primary_key=True)#, ForeignKey('Trajets.id_trajets'))
-    id_station = Column(Integer, primary_key=True)#, ForeignKey('Station.id_station'))
-    decalage = Column(Integer)
-    retard = Column(Integer)
-
-    def getID(self):
-        return 'Unknown'
-
 class Station(Base):
     __tablename__ = 'Station'
     nom = Column(String(50))
@@ -34,6 +24,16 @@ class Station(Base):
 
     def getID():
         return Station.id_station
+
+class LienTrajetsStation(Base):
+    __tablename__ = 'LienTrajetStation'
+    id_trajets = Column(Integer, ForeignKey('Trajets.id_trajets'), primary_key=True)
+    id_station = Column(Integer, ForeignKey('Station.id_station'), primary_key=True)
+    decalage = Column(Integer)
+    retard = Column(Integer)
+
+    def getID(self):
+        return 'Unknown'
 
 class Train(Base):
     __tablename__ = 'Train'

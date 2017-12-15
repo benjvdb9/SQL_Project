@@ -31,14 +31,38 @@ class DB_Manager():
         self.session.query(table).filter(table.getID() == id).delete()
         self.session.commit()
 
-    def selectTrajets(self):
-        s = select([SQL_DB.Trajets, SQL_DB.LienTrajetsStation, SQL_DB.Station])
-
+    def applySQL(self, SQL):
         conn = self.engine.connect()
-        result = conn.execute(s)
+        result = conn.execute(SQL)
+        return result
 
+    def printResult(self, result):
         for row in result:
             print(row)
+
+    def getMergedTable(self):
+        s = select([SQL_DB.Trajets, SQL_DB.LienTrajetsStation, SQL_DB.Station]).\
+            where(SQL_DB.Trajets.id_trajets == SQL_DB.LienTrajetsStation.id_trajets).\
+            where(SQL_DB.LienTrajetsStation.id_station == SQL_DB.Station.id_station)
+
+        return s
+            
+    def selectTrajets(self, id_tr):
+        s = self.getMergedTable()
+        
+        s = s.where(SQL_DB.Trajets.id_trajets == id_tr).\
+            group_by(SQL_DB.LienTrajetsStation.decalage)
+        
+        result = self.applySQL(s)
+        return result
+
+    def getStationInfo(self, id_st):
+        s = self.getMergedTable()
+
+        s = s.where(SQL_DB.Station.id_station == id_st)
+
+        result = self.applySQL(s)
+        self.printResult(result)
 
     def reset(self):
         input('Reseting DB, continue?')
@@ -56,7 +80,9 @@ dbm = DB_Manager()
 
 #dbm.reset()
 
-dbm.selectTrajets()
+import pdb; pdb.set_trace()
+test = dbm.selectTrajets(1)
+#dbm.getStationInfo(9)
 
 #Le trajet Ottignies-Schuman
 '''dbm.addToTable(SQL_DB.Trajets, id_trajets= 1, heure_depart= time(6, 45),

@@ -1,5 +1,5 @@
 import SQL_DB
-from datetime import time
+from datetime import datetime
 from DB_requests import DB_Manager
 
 class Filler():
@@ -23,9 +23,9 @@ class Filler():
         self.Manager.addToTable(SQL_DB.PC, id_pc = 3, position_pc = 9)
 
     def fillTrajets(self):
-        self.Manager.addToTable(SQL_DB.Trajets, id_trajets= 1, heure_depart= time(6, 45),
+        self.Manager.addToTable(SQL_DB.Trajets, id_trajets= 1, heure_depart= datetime(1, 1, 1, 6, 45),
                gare_depart= 'Ottignies', id_train= 30)
-        self.Manager.addToTable(SQL_DB.Trajets, id_trajets= 2, heure_depart= time(6, 45),
+        self.Manager.addToTable(SQL_DB.Trajets, id_trajets= 2, heure_depart= datetime(1, 1, 1, 6, 45),
                gare_depart= 'Ottignies', id_train= 31)
 
     def fillLienTrajetsStation(self):
@@ -36,6 +36,14 @@ class Filler():
         self.Manager.addToTable(SQL_DB.LienTrajetsStation, id_trajets= 1, id_station= 8,
                decalage= 20, retard= 0)
         self.Manager.addToTable(SQL_DB.LienTrajetsStation, id_trajets= 1, id_station= 9,
+               decalage= 30, retard= 0)
+        self.Manager.addToTable(SQL_DB.LienTrajetsStation, id_trajets= 2, id_station= 9,
+               decalage= 0, retard= 5)
+        self.Manager.addToTable(SQL_DB.LienTrajetsStation, id_trajets= 2, id_station= 8,
+               decalage= 10, retard= 5)
+        self.Manager.addToTable(SQL_DB.LienTrajetsStation, id_trajets= 2, id_station= 7,
+               decalage= 20, retard= 0)
+        self.Manager.addToTable(SQL_DB.LienTrajetsStation, id_trajets= 2, id_station= 6,
                decalage= 30, retard= 0)
 
     def fillStations(self):

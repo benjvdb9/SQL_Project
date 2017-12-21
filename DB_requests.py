@@ -1,5 +1,5 @@
 import SQL_DB
-from datetime import time
+from datetime import timedelta
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -37,8 +37,11 @@ class DB_Manager():
         return result
 
     def printResult(self, result):
+        import pdb; pdb.set_trace()
         for row in result:
-            print(row)
+            timesum = row[1] + timedelta(minutes = row[3])
+            printstr = row[2] + ', ' + str(timesum.strftime("%H%M"))
+            print(printstr)
 
     def getMergedTable(self):
         s = select([SQL_DB.Trajets, SQL_DB.LienTrajetsStation, SQL_DB.Station]).\
@@ -54,7 +57,7 @@ class DB_Manager():
             group_by(SQL_DB.LienTrajetsStation.decalage)
         
         result = self.applySQL(s)
-        return result
+        self.printResult(result)
 
     def getStationInfo(self, id_st):
         s = self.getMergedTable()

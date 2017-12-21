@@ -3,14 +3,14 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.types import Time
+from sqlalchemy.types import DateTime
 
 Base = declarative_base()
 
 class Trajets(Base):
     __tablename__ = 'Trajets'
     id_trajets = Column(Integer, primary_key=True)
-    heure_depart = Column(Time)
+    heure_depart = Column(DateTime)
     gare_depart = Column(String(50))
     id_train = Column(Integer, ForeignKey('Train.id_train'))
 

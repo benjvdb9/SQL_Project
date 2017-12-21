@@ -74,19 +74,19 @@ class DB_Manager():
         self.session.commit()
 
 
-dbm = DB_Manager()
+#dbm = DB_Manager()
 #dbm.addToTable(SQL_DB.Train, id_train = 1, nb_wagon = 2, id_pc = 3)
 #dbm.addToTable(SQL_DB.PC, id_pc = 3, position_pc = 3)
 #dbm.addToTable(SQL_DB.PC, id_pc = 3, position_pc = 6)
 #dbm.addToTable(SQL_DB.PC, id_pc = 3, position_pc = 9)
 #dbm.removeFromTable(SQL_DB.Train, 1)
 
-dbm.reset()
+#dbm.reset()
 
-test = dbm.selectTrajets(1)
+'''test = dbm.selectTrajets(1)
 for elem in test:
     print(elem)
-#dbm.getStationInfo(9)
+#dbm.getStationInfo(9)'''
 
 #Le trajet Ottignies-Schuman
 '''dbm.addToTable(SQL_DB.Trajets, id_trajets= 1, heure_depart= time(6, 45),

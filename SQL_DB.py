@@ -46,7 +46,8 @@ class Train(Base):
 
 class PC(Base):
     __tablename__ = 'PC'
-    id_pc = Column(Integer, primary_key=True)
+    pc_pk = Column(Integer, primary_key=True, autoincrement=True)
+    id_pc = Column(Integer)
     position_pc = Column(Integer)
 
     def getID():

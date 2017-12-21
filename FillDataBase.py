@@ -1,8 +1,12 @@
 import SQL_DB
+from datetime import time
 from DB_requests import DB_Manager
 
 class Filler():
     def __init__(self):
+        self.Manager = DB_Manager()
+
+    def reconnect(self):
         self.Manager = DB_Manager()
 
     def createDB(self):
@@ -42,9 +46,19 @@ class Filler():
 
     def fillDB(self):
         print('Erasing DB before creating one')
-        self.Manager.reset()
+        try:
+            self.Manager.reset()
+        except:
+            print('No DB to reset, creating new one')
+        self.createDB()
+        self.reconnect()
         self.fillTrain()
         self.fillPC()
         self.fillTrajets()
         self.fillLienTrajetsStation()
-        self.fillStation()
+        self.fillStations()
+
+
+if __name__ == '__main__':
+    test = Filler()
+    test.fillDB()

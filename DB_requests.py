@@ -8,6 +8,7 @@ class DB_Manager():
     def __init__(self):
         self.engine  = ''
         self.session = self.createSession()
+        self.list_cache = []
 
     def createSession(self):
         #Can be used to use the .db file but not to create a new one
@@ -36,11 +37,13 @@ class DB_Manager():
         result = conn.execute(SQL)
         return result
 
-    def printResult(self, result):
+    def printResult(self, result, structure, *args):
+        print_ttl = []
         for row in result:
             timesum = row[1] + timedelta(minutes = row[6])
-            printstr = '{}, {} +{}'.format(row[8], str(timesum.strftime("%H:%M")), str(row[7]))
-            print(printstr)
+            printstr= structure.format(*self.list_decorator(row, timesum, *args))
+            print_ttl.append(printstr)
+        return print_ttl
 
     def getMergedTable(self):
         s = select([SQL_DB.Trajets, SQL_DB.LienTrajetsStation, SQL_DB.Station]).\
@@ -56,7 +59,7 @@ class DB_Manager():
             group_by(SQL_DB.LienTrajetsStation.decalage)
         
         result = self.applySQL(s)
-        self.printResult(result)
+        self.printList(self.printResult(result, '{}, {} +{}', 9, 'HM', 8))
 
     def getTrainInfo(self, id_tr):
         s = select([SQL_DB.Trajets, SQL_DB.Train, SQL_DB.PC]).\
@@ -66,13 +69,10 @@ class DB_Manager():
         s = s.where(SQL_DB.Trajets.id_trajets == id_tr)
         result = self.applySQL(s)
 
-        pc = []
-        for row in result:
-            wagons = row[5]
-            pc.append(row[9])
-
-        print('Nombe de wagons: {}\nWagons première classe: {}\n'.\
-              format(wagons, pc))
+        self.list_cache = []
+        print_rst = self.printResult(
+            result, 'Nombe de wagons: {}\nWagons première classe: {}', 6, [10])
+        print(print_rst[-1])
 
     def getStationInfo(self, id_st):
         s = self.getMergedTable()
@@ -81,7 +81,8 @@ class DB_Manager():
         s = s.where(SQL_DB.Station.id_station == id_st)
 
         result = self.applySQL(s)
-        self.printResult(result)
+        self.printList(
+            self.printResult(result, '{}, {} +{} -> {}', 9, 'HM', 8, 4))
 
     def getStationID(self, st_name):
         s = select([SQL_DB.Station]).\
@@ -92,6 +93,26 @@ class DB_Manager():
             return st_name
         else:
             return result[1]
+
+    def list_decorator(self, row, timesum, *args):
+        i = 0
+        args = list(args)
+        for elem in args:
+            if type(elem) == int:
+                args[i] = str(row[elem])
+            elif type(elem)  == list:
+                self.list_cache.append(row[elem[0]])
+                args[i] = str(self.list_cache)
+            elif elem == 'HM':
+                args[i] = str(timesum.strftime("%H:%M"))
+            else:
+                args[i] = elem
+            i+=1
+        return tuple(args)
+
+    def printList(self, lst):
+        for elem in lst:
+            print(elem)
 
     def reset(self):
         input('Reseting DB, continue?')

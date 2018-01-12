@@ -24,9 +24,9 @@ class Filler():
 
     def fillTrajets(self):
         self.Manager.addToTable(SQL_DB.Trajets, id_trajets= 1, heure_depart= datetime(1, 1, 1, 6, 45),
-               gare_depart= 'Ottignies', id_train= 30)
+               gare_depart= 'Ottignies', id_train= 30, nom_trajet = 'Schaerbeek')
         self.Manager.addToTable(SQL_DB.Trajets, id_trajets= 2, heure_depart= datetime(1, 1, 1, 6, 45),
-               gare_depart= 'Ottignies', id_train= 31)
+               gare_depart= 'Bxl-Schuman', id_train= 31, nom_trajet = 'Namur-Luxembourg')
 
     def fillLienTrajetsStation(self):
         self.Manager.addToTable(SQL_DB.LienTrajetsStation, id_trajets= 1, id_station= 6,

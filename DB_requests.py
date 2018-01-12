@@ -37,10 +37,9 @@ class DB_Manager():
         return result
 
     def printResult(self, result):
-        import pdb; pdb.set_trace()
         for row in result:
-            timesum = row[1] + timedelta(minutes = row[3])
-            printstr = row[2] + ', ' + str(timesum.strftime("%H%M"))
+            timesum = row[1] + timedelta(minutes = row[6])
+            printstr = '{}, {} +{}'.format(row[8], str(timesum.strftime("%H:%M")), str(row[7]))
             print(printstr)
 
     def getMergedTable(self):
@@ -59,13 +58,40 @@ class DB_Manager():
         result = self.applySQL(s)
         self.printResult(result)
 
+    def getTrainInfo(self, id_tr):
+        s = select([SQL_DB.Trajets, SQL_DB.Train, SQL_DB.PC]).\
+            where(SQL_DB.Trajets.id_train == SQL_DB.Train.id_train).\
+            where(SQL_DB.Train.id_pc == SQL_DB.PC.id_pc)
+
+        s = s.where(SQL_DB.Trajets.id_trajets == id_tr)
+        result = self.applySQL(s)
+
+        pc = []
+        for row in result:
+            wagons = row[5]
+            pc.append(row[9])
+
+        print('Nombe de wagons: {}\nWagons première classe: {}\n'.\
+              format(wagons, pc))
+
     def getStationInfo(self, id_st):
         s = self.getMergedTable()
 
+        id_st = self.getStationID(id_st)
         s = s.where(SQL_DB.Station.id_station == id_st)
 
         result = self.applySQL(s)
         self.printResult(result)
+
+    def getStationID(self, st_name):
+        s = select([SQL_DB.Station]).\
+            where(SQL_DB.Station.nom == st_name)
+
+        result = self.applySQL(s).first()
+        if result == None:
+            return st_name
+        else:
+            return result[1]
 
     def reset(self):
         input('Reseting DB, continue?')

@@ -13,6 +13,7 @@ class Trajets(Base):
     heure_depart = Column(DateTime)
     gare_depart = Column(String(50))
     id_train = Column(Integer, ForeignKey('Train.id_train'))
+    nom_trajet = Column(String(50))
 
     def getID():
         return 'id_trajets'

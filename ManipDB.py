@@ -13,6 +13,10 @@ class Interpreter():
             id_trajet = input('ID de trajet?\n')
             self.manager.selectTrajets(id_trajet)
 
+        elif self.command == 'info':
+            id_trajet = input('ID de trajet?\n')
+            self.manager.getTrainInfo(id_trajet)
+
         elif self.command == 'station':
             id_station = input('Station?\n')
             self.manager.getStationInfo(id_station)

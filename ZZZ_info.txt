@@ -1,0 +1,16 @@
+Utiliser FillDataBase.py pour créer un petite base de données utilisé pour tester le code.
+FillDataBase.py vide la DB entièrement avant de la remplir avec les valeurs par défauts, ci
+il n'y pas de fichier train_alchemy.db il le créera automatiquement.
+
+Pour la lecture de la base de donnée nous avons utilisé DB Browser for SQLite, ceci nous
+permettai aussi de voir le code en SQL et même de tester notre DB avec des requêtes SQL (qu'on
+peut trouver dans le folder SQL-test) Dans le folder sqlalchemy_tests on peut trouver du script
+pyhton de réfernce pour l'utilsation de sqlalchemy mais ce n'est pas très important.
+
+SQL_DB.py: La structure de la DB est établi içi (La session crée ici est aussi très importante)
+
+DB_requests.py: Contient l'objet DB_Manager qui effectue des requêtes sur la DB.
+
+FillDataBase.py: Permet de créer, vider, mettre à jour la DB
+
+Manip_DB.py: Interpreteur. Permet de lancer des requêtes en CLI. (voir ZZZ_fonctionnement.png)

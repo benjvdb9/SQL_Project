@@ -11,8 +11,9 @@ class DB_Manager():
         self.list_cache = []
 
     def createSession(self):
-        #Can be used to use the .db file but not to create a new one
+        #Can be used to manipulate the .db file but not to create a new one
         #or to update the structure of the database
+        #if DB structure changes, erase the .db file and create a new one using SQL_DB.Utility
         
         Base = declarative_base()
         self.engine = create_engine('sqlite:///train_alchemy.db')
@@ -40,7 +41,7 @@ class DB_Manager():
     def printResult(self, result, structure, *args):
         print_ttl = []
         for row in result:
-            timesum = row[1] + timedelta(minutes = row[6])
+            timesum = row[1] + timedelta(minutes = row[7])
             printstr= structure.format(*self.list_decorator(row, timesum, *args))
             print_ttl.append(printstr)
         return print_ttl
